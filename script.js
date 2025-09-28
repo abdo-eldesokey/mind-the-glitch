@@ -1,5 +1,31 @@
+// Create floating particles for hero background
+function createFloatingParticles() {
+    const hero = document.querySelector('.hero');
+    const particleCount = 15;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'floating-particle';
+        particle.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 12 + 8}px;
+            height: ${Math.random() * 12 + 8}px;
+            background: rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1});
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: float ${Math.random() * 6 + 4}s ease-in-out infinite;
+            animation-delay: ${Math.random() * 2}s;
+            z-index: 0;
+        `;
+        hero.appendChild(particle);
+    }
+}
+
 // Smooth scrolling for anchor links
 document.addEventListener('DOMContentLoaded', function() {
+    // Create floating particles
+    createFloatingParticles();
     // Add smooth scrolling to all links
     const links = document.querySelectorAll('a[href^="#"]');
     

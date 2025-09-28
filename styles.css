@@ -9,7 +9,7 @@ body {
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
     color: #333;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 25%, #6a4c93 75%, #9b59b6 100%);
+    background: linear-gradient(135deg, #00018d 0%, #2d1b69 25%, #620096 50%, #8e44ad 75%, #9b59b6 100%);
     min-height: 100vh;
 }
 
@@ -30,6 +30,21 @@ body {
     position: relative;
     overflow: hidden;
     z-index: 1;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(98, 0, 150, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 1, 141, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(142, 68, 173, 0.2) 0%, transparent 50%);
+    animation: gradientShift 8s ease-in-out infinite;
+    z-index: -1;
 }
 
 .hero::before {
@@ -54,7 +69,7 @@ body {
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    background: linear-gradient(45deg, #ffffff, #e8f4fd, #d1c4e9);
+    background: linear-gradient(45deg, #ffffff, #e8e0ff, #d4c5ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -78,7 +93,7 @@ body {
 }
 
 .author {
-    color: #e8f4fd;
+    color: #e8e0ff;
     text-decoration: none;
     font-weight: 500;
     padding: 0.5rem 1rem;
@@ -101,13 +116,13 @@ body {
 
 .conference-badge {
     display: inline-block;
-    background: linear-gradient(45deg, #ff6b6b, #ffa726);
+    background: linear-gradient(45deg, #620096, #8e44ad);
     color: white;
     padding: 0.8rem 2rem;
     border-radius: 30px;
     font-weight: 600;
     font-size: 1.1rem;
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 6px 20px rgba(98, 0, 150, 0.4);
     animation: pulse 2s infinite;
 }
 
@@ -133,15 +148,16 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #00018d, #620096);
     color: white;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 1, 141, 0.3);
+    border: none;
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
-    background: linear-gradient(45deg, #5a6fd8, #6a4190);
+    box-shadow: 0 12px 35px rgba(0, 1, 141, 0.4);
+    background: linear-gradient(45deg, #2d1b69, #8e44ad);
 }
 
 .btn-secondary {
@@ -157,7 +173,7 @@ body {
 }
 
 .tldr {
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(98, 62, 150, 0.7), rgba(142, 68, 173, 0.7));
     backdrop-filter: blur(15px);
     padding: 2rem;
     border-radius: 20px;
@@ -169,7 +185,7 @@ body {
 .tldr h3 {
     font-size: 1.3rem;
     margin-bottom: 1rem;
-    color: #e8f4fd;
+    color: #e8e0ff;
 }
 
 .tldr p {
@@ -195,7 +211,7 @@ body {
     font-weight: 700;
     text-align: center;
     margin-bottom: 3rem;
-    background: linear-gradient(45deg, #1e3c72, #6a4c93);
+    background: linear-gradient(45deg, #00018d, #620096);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -229,12 +245,12 @@ body {
 
 .abstract-content em {
     font-style: italic;
-    color: #6a4c93;
+    color: #620096;
     font-weight: 500;
 }
 
 .abstract-content strong {
-    color: #1e3c72;
+    color: #00018d;
     font-weight: 600;
 }
 
@@ -349,12 +365,12 @@ body {
 }
 
 .indicator.active {
-    background: #6a4c93;
+    background: #620096;
     transform: scale(1.2);
 }
 
 .indicator:hover {
-    background: #9b59b6;
+    background: #8e44ad;
 }
 
 .section-content {
@@ -399,28 +415,28 @@ body {
 .step-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-    border-left-color: #6a4c93;
+    border-left-color: #620096;
 }
 
 .step-icon {
     flex-shrink: 0;
     width: 60px;
     height: 60px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #00018d, #620096);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-size: 1.5rem;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 1, 141, 0.3);
 }
 
 .step-content h4 {
     margin: 0 0 0.5rem 0;
     font-size: 1.3rem;
     font-weight: 600;
-    color: #1e3c72;
+    color: #00018d;
 }
 
 .step-content p {
@@ -441,23 +457,23 @@ body {
 .stat-card {
     text-align: center;
     padding: 2rem;
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #00018d, #620096);
     border-radius: 20px;
     color: white;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 1, 141, 0.3);
     transition: all 0.3s ease;
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 12px 35px rgba(0, 1, 141, 0.4);
 }
 
 .stat-number {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    background: linear-gradient(45deg, #ffffff, #e8f4fd);
+    background: linear-gradient(45deg, #ffffff, #e8e0ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -502,28 +518,28 @@ body {
 .component-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-    border-left-color: #6a4c93;
+    border-left-color: #620096;
 }
 
 .component-icon {
     flex-shrink: 0;
     width: 60px;
     height: 60px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #00018d, #620096);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-size: 1.5rem;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 1, 141, 0.3);
 }
 
 .component-content h4 {
     margin: 0 0 0.5rem 0;
     font-size: 1.3rem;
     font-weight: 600;
-    color: #1e3c72;
+    color: #00018d;
 }
 
 .component-content p {
@@ -549,11 +565,11 @@ body {
 }
 
 .semantic-branch {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #00018d, #620096);
 }
 
 .visual-branch {
-    background: linear-gradient(135deg, #f093fb, #f5576c);
+    background: linear-gradient(135deg, #620096, #8e44ad);
 }
 
 .branch-card:hover {
@@ -607,13 +623,13 @@ body {
 .benefit-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-    border-color: #6a4c93;
+    border-color: #620096;
 }
 
 .benefit-icon {
     width: 80px;
     height: 80px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #00018d, #620096);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -621,14 +637,14 @@ body {
     margin: 0 auto 1.5rem;
     color: white;
     font-size: 2rem;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 1, 141, 0.3);
 }
 
 .benefit-content h4 {
     margin: 0 0 1rem 0;
     font-size: 1.3rem;
     font-weight: 600;
-    color: #1e3c72;
+    color: #00018d;
 }
 
 .benefit-content p {
@@ -745,6 +761,37 @@ body {
         transform: scale(1.05);
     }
 }
+
+@keyframes gradientShift {
+    0%, 100% {
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(98, 0, 150, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(0, 1, 141, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(142, 68, 173, 0.2) 0%, transparent 50%);
+    }
+    33% {
+        background: 
+            radial-gradient(circle at 70% 30%, rgba(98, 0, 150, 0.4) 0%, transparent 60%),
+            radial-gradient(circle at 30% 70%, rgba(0, 1, 141, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 60% 60%, rgba(142, 68, 173, 0.3) 0%, transparent 50%);
+    }
+    66% {
+        background: 
+            radial-gradient(circle at 40% 20%, rgba(98, 0, 150, 0.2) 0%, transparent 50%),
+            radial-gradient(circle at 60% 80%, rgba(0, 1, 141, 0.4) 0%, transparent 60%),
+            radial-gradient(circle at 80% 40%, rgba(142, 68, 173, 0.3) 0%, transparent 50%);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
