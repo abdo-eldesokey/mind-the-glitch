@@ -4,707 +4,397 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mind-the-Glitch: Visual Correspondence for Detecting Inconsistencies in Subject-Driven Generation</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #1a365d;
-            --secondary-color: #2c5282;
-            --accent-color: #3182ce;
-            --light-bg: #f8f9fa;
-            --dark-bg: #1a202c;
-            --text-color: #2d3748;
-            --light-text: #f8f9fa;
-            --border-radius: 4px;
-            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Source Sans Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--light-bg);
-            overflow-x: hidden;
-        }
-        
-        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Source+Serif+Pro:wght@400;600;700&display=swap');
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            background: var(--primary-color);
-            color: var(--light-text);
-            padding: 3rem 0;
-            text-align: center;
-            position: relative;
-        }
-
-        .header-content {
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-            padding: 0 20px;
-        }
-
-        h1 {
-            font-family: 'Source Serif Pro', Georgia, serif;
-            font-size: 2.8rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-            color: var(--light-text);
-            font-weight: 700;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 400;
-        }
-
-        .authors {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .author {
-            position: relative;
-        }
-
-        .author a {
-            color: var(--light-text);
-            text-decoration: none;
-            font-weight: 400;
-            border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
-            transition: var(--transition);
-        }
-
-        .author a:hover {
-            color: var(--accent-color);
-            border-bottom-color: var(--accent-color);
-        }
-
-        .btn-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 2.5rem 0;
-            perspective: 1000px;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            box-shadow: var(--box-shadow);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-
-        .btn-primary i {
-            font-size: 1.2rem;
-        }
-
-        .video-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 2rem auto;
-            background-color: #000;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            position: relative;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            box-shadow: var(--box-shadow);
-        }
-
-        .video-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 1.2rem;
-            background: #1a202c;
-        }
-        
-        .video-placeholder p {
-            padding: 10px 20px;
-        }
-
-        .section {
-            padding: 3rem 0;
-            background-color: white;
-            margin: 2rem 0;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 3px;
-            height: 100%;
-            background: var(--accent-color);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .section-header h2 {
-            font-family: 'Source Serif Pro', Georgia, serif;
-            font-size: 2rem;
-            color: var(--primary-color);
-            position: relative;
-            display: inline-block;
-            padding-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .section-header h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 2px;
-            background: var(--accent-color);
-        }
-
-        .section-content {
-            padding: 0 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .abstract {
-            background-color: white;
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            margin: 2rem 0;
-            position: relative;
-            overflow: hidden;
-            border-left: 3px solid var(--primary-color);
-        }
-
-        .abstract h2 {
-            font-family: 'Source Serif Pro', Georgia, serif;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            position: relative;
-            display: inline-block;
-            padding-bottom: 0.5rem;
-        }
-        
-        .abstract h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background: var(--accent-color);
-        }
-
-        .tldr {
-            background-color: rgba(49, 130, 206, 0.05);
-            padding: 1.5rem;
-            border-left: 3px solid var(--accent-color);
-            margin: 1.5rem 0;
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
-        }
-
-        .tldr h3 {
-            color: var(--primary-color);
-            margin-bottom: 0.75rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .image-placeholder {
-            width: 100%;
-            height: 300px;
-            background: #f1f1f1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: var(--border-radius);
-            margin-bottom: 1.5rem;
-            color: #666;
-            font-size: 1.1rem;
-            border: 1px solid #e2e8f0;
-        }
-
-        footer {
-            background: var(--dark-bg);
-            color: var(--light-text);
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        /* Highlights section */
-        .highlights {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        
-        .highlight-item {
-            flex: 1;
-            min-width: 250px;
-            max-width: 350px;
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            text-align: left;
-            border-top: 3px solid var(--accent-color);
-        }
-        
-        .highlight-icon {
-            color: var(--accent-color);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .highlight-item h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.75rem;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-        
-        .highlight-item p {
-            color: var(--text-color);
-            font-size: 0.95rem;
-        }
-        
-        /* Feature lists */
-        .feature-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-        
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 0;
-        }
-        
-        .feature-item i {
-            color: var(--accent-color);
-            font-size: 1rem;
-        }
-        
-        /* Reference section */
-        .reference-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .reference-item {
-            display: flex;
-            gap: 0.75rem;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .reference-number {
-            min-width: 24px;
-            color: var(--primary-color);
-            font-weight: bold;
-            text-align: center;
-        }
-        
-        .reference-text {
-            flex: 1;
-        }
-        
-        .bibtex-container {
-            margin-top: 1.5rem;
-        }
-        
-        .bibtex-container h3 {
-            color: var(--primary-color);
-            margin-bottom: 0.75rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        
-        .bibtex-code {
-            background-color: #f8f9fa;
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            overflow-x: auto;
-            font-family: monospace;
-            font-size: 0.85rem;
-            border: 1px solid #e2e8f0;
-        }
-        
-        /* Image placeholder enhancements */
-        .image-placeholder {
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .image-placeholder i {
-            color: var(--accent-color);
-            opacity: 0.6;
-        }
-        
-        .image-placeholder span {
-            font-weight: 400;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .subtitle {
-                font-size: 1.2rem;
-            }
-
-            .authors {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: center;
-            }
-
-            .btn-container {
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-            }
-            
-            .btn-primary {
-                width: 80%;
-                justify-content: center;
-            }
-
-            .section {
-                padding: 3rem 0;
-                margin: 2rem 0;
-            }
-
-            .section-content {
-                padding: 0 1.5rem;
-            }
-            
-            .section-header h2 {
-                font-size: 2rem;
-            }
-            
-            .abstract {
-                padding: 2rem;
-            }
-            
-            .abstract h2 {
-                font-size: 1.8rem;
-            }
-            
-            .tldr {
-                padding: 1.5rem;
-            }
-            
-            .image-placeholder {
-                height: 250px;
-            }
-            
-            .video-container {
-                transform: none;
-                margin: 2rem auto;
-            }
-            
-            .highlights {
-                flex-direction: column;
-                align-items: center;
-                gap: 1.5rem;
-            }
-            
-            .highlight-item {
-                width: 100%;
-                max-width: 100%;
-            }
-            
-            .feature-item {
-                padding: 0.6rem 1rem;
-            }
-            
-            .reference-item {
-                flex-direction: column;
-                padding: 1rem;
-            }
-            
-            .reference-number {
-                align-self: flex-start;
-            }
-            
-            .bibtex-code {
-                padding: 1rem;
-                font-size: 0.8rem;
-            }
-        }
-
-        /* Landscape mode adjustments */
-        @media (max-height: 500px) and (orientation: landscape) {
-            header {
-                padding-top: 48px; /* landscape:pt-48 */
-            }
-
-            .header-content {
-                margin-top: 16px; /* landscape:mt-16 */
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .subtitle {
-                font-size: 1rem;
-                margin-bottom: 1rem;
-            }
-            
-            .authors {
-                gap: 1rem;
-                margin-bottom: 1.5rem;
-            }
-            
-            .btn-container {
-                margin: 1rem 0;
-            }
-            
-            .btn-primary {
-                padding: 0.5rem 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="container">
-            <div class="header-content">
-                <h2>Mind-the-Glitch: Visual Correspondence for Detecting Inconsistencies in Subject-Driven Generation</h2>
-                <div class="subtitle">NeurIPS 2025 (Spotlight)</div>
+            <div class="hero-content">
+
+
+                <h1 class="title">Mind-the-Glitch</h1>
+                <h2 class="subtitle">Visual Correspondence for Detecting Inconsistencies in Subject-Driven Generation</h2>
+                
                 <div class="authors">
-                    <div class="author"><a href="https://abdo-eldesokey.github.io/" target="_blank">Abdelrahman Eldesokey</a></div>
-                    <div class="author"><a href="https://scholar.google.com/citations?user=xbAU9sIAAAAJ&hl=en" target="_blank">Aleksandar Cvejic</a></div>
-                    <div class="author"><a href="https://www.bernardghanem.com/" target="_blank">Bernard Ghanem</a></div>
-                    <div class="author"><a href="https://peterwonka.net/" target="_blank">Peter Wonka</a></div>
+                    <a href="https://abdo-eldesokey.github.io/" class="author">Abdelrahman Eldesokey</a>
+                    <a href="https://cemse.kaust.edu.sa/profiles/aleksandar-cvejic" class="author">Aleksandar Cvejic</a>
+                    <a href="https://www.bernardghanem.com/" class="author">Bernard Ghanem</a>
+                    <a href="https://peterwonka.net/" class="author">Peter Wonka</a>
                 </div>
-                <div class="btn-container">
-                    <a href="https://arxiv.org/abs/PLACEHOLDER" class="btn-primary" target="_blank">
-                        <i class="fas fa-file-pdf"></i> arXiv
+                
+                <div class="conference">
+                    <span class="conference-badge">NeurIPS 2025 (Spotlight)</span>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-file-pdf"></i>
+                        ArXiv
                     </a>
-                    <a href="https://github.com/abdo-eldesokey/mind-the-glitch" class="btn-primary" target="_blank">
-                        <i class="fab fa-github"></i> GitHub
+                    <a href="https://github.com/abdo-eldesokey/mind-the-glitch" class="btn btn-secondary">
+                        <i class="fab fa-github"></i>
+                        Code (Coming Soon)
                     </a>
-                    <a href="https://huggingface.co/PLACEHOLDER/mind-the-glitch" class="btn-primary" target="_blank">
-                        <i class="fas fa-rocket"></i> Hugging Face
+                    <a href="#" class="btn btn-secondary">
+                        <i class="fas fa-robot"></i>
+                        HuggingFace
                     </a>
+                </div>
+                
+                <div class="tldr">
+                    <h3>TL;DR</h3>
+                    <p>We introduce the first method to both <strong>quantify and spatially localize</strong> visual inconsistencies in subject-driven image generation by disentangling visual and semantic features from diffusion model backbones.</p>
                 </div>
             </div>
         </div>
-    </header>
+    </section>
 
-    <div class="container">
-        <div class="video-container">
-            <div class="video-placeholder">
-                <p><i class="fas fa-film"></i> Teaser Video Coming Soon</p>
+    <!-- Teaser Video Section -->
+    <section class="teaser-section">
+        <div class="container">
+            <h2 class="section-title">Teaser Video</h2>
+            <div class="video-container">
+                <video controls poster="public/video-poster.jpg">
+                    <source src="public/mtg_teaser_sound.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
         </div>
-        
-        <!-- <div class="highlights">
-            <div class="highlight-item">
-                <div class="highlight-icon">
-                    <i class="fas fa-eye"></i>
-                </div>
-                <h3>Visual Correspondence</h3>
-                <p>Novel approach to disentangle visual features from semantic features in diffusion models</p>
-            </div>
-            <div class="highlight-item">
-                <div class="highlight-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3>Visual Semantic Matching</h3>
-                <p>New metric for quantifying inconsistencies in subject-driven generation</p>
-            </div>
-            <div class="highlight-item">
-                <div class="highlight-icon">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <h3>Spatial Localization</h3>
-                <p>Precise identification of inconsistent regions in generated images</p>
-            </div>
-        </div> -->
+    </section>
 
-        <div class="abstract">
-            <h2>Abstract</h2>
-            <p>
-                We propose a novel approach for disentangling visual and semantic features from the backbones of pre-trained diffusion models, enabling <em>visual correspondence</em> in a manner analogous to the well-established <em>semantic correspondence</em>. 
-                While diffusion model backbones are known to encode semantically rich features, they must also contain visual features to support their image synthesis capabilities. 
-                However, isolating these visual features is challenging due to the absence of annotated datasets. 
-                To address this, we introduce an automated pipeline that constructs image pairs with annotated semantic and visual correspondences based on existing subject-driven image generation datasets, and design a contrastive architecture to separate the two feature types. 
-                Leveraging the disentangled representations, we propose a new metric, <em>Visual Semantic Matching (VSM)</em>, that quantifies visual inconsistencies in subject-driven image generation. 
-                Empirical results show that our approach outperforms global feature-based metrics such as CLIP, DINO, and vision--language models in quantifying visual inconsistencies while also enabling spatial localization of inconsistent regions. 
-                To our knowledge, this is the first method that supports both quantification and localization of inconsistencies in subject-driven generation, offering a valuable tool for advancing this task.
-            </p>
-            <div class="tldr">
-                <h3>TL;DR</h3>
-                <p>We disentangle visual from semantic features in diffusion models to detect and localize inconsistencies in subject-driven image generation, outperforming existing metrics like CLIP and DINO.</p>
+    <!-- Abstract Section -->
+    <section class="abstract-section">
+        <div class="container">
+            <h2 class="section-title">Abstract</h2>
+            <div class="abstract-content">
+                <p>We propose a novel approach for disentangling visual and semantic features from the backbones of pre-trained diffusion models, enabling <em>visual correspondence</em> in a manner analogous to the well-established <em>semantic correspondence</em>.</p>
+                
+                <p>While diffusion model backbones are known to encode semantically rich features, they must also contain visual features to support their image synthesis capabilities. However, isolating these visual features is challenging due to the absence of annotated datasets.</p>
+                
+                <p>To address this, we introduce an automated pipeline that constructs image pairs with annotated semantic and visual correspondences based on existing subject-driven image generation datasets, and design a contrastive architecture to separate the two feature types.</p>
+                
+                <p>Leveraging the disentangled representations, we propose a new metric, <em>Visual Semantic Matching (VSM)</em>, that quantifies visual inconsistencies in subject-driven image generation. Empirical results show that our approach outperforms global feature-based metrics such as CLIP, DINO, and vision--language models in quantifying visual inconsistencies while also enabling spatial localization of inconsistent regions.</p>
+                
+                <p>To our knowledge, this is the first method that supports both quantification and localization of inconsistencies in subject-driven generation, offering a valuable tool for advancing this task.</p>
             </div>
         </div>
+    </section>
 
-        <section class="section" id="dataset">
+    <!-- Main Content Sections -->
+    <section class="content-section" id="dataset">
+        <div class="container">
+            <h2 class="section-title">Dataset Generation Pipeline</h2>
             <div class="section-header">
-                <h2>Dataset Generation Pipeline</h2>
+                <div class="section-image">
+                    <img src="public/dataset.jpg" alt="Dataset Generation Pipeline" />
+                </div>
             </div>
             <div class="section-content">
-                <div class="image-placeholder">
-                    <i class="fas fa-database fa-3x"></i>
-                    <span>Dataset Generation Pipeline Image</span>
+                <div class="pipeline-overview">
+                    <p class="section-intro">We developed an <strong>automated pipeline</strong> to create high-quality image pairs with controlled visual inconsistencies for training our correspondence model.</p>
                 </div>
-                <p>Details about the dataset generation pipeline will be added here. Our automated pipeline constructs image pairs with annotated semantic and visual correspondences based on existing subject-driven image generation datasets.</p>
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Automated annotation process</span>
+                
+                <div class="pipeline-steps">
+                    <div class="step-item">
+                        <div class="step-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="step-content">
+                            <h4>Foundation Dataset</h4>
+                            <p>Starts from <strong>consistent subject pairs</strong> sourced from the Subjects200k dataset</p>
+                        </div>
                     </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Paired image construction</span>
+                    
+                    <div class="step-item">
+                        <div class="step-icon">
+                            <i class="fas fa-cut"></i>
+                        </div>
+                        <div class="step-content">
+                            <h4>Subject Segmentation</h4>
+                            <p>Uses <strong>Grounded-SAM</strong> to precisely segment subjects and <strong>CleanDIFT</strong> to compute semantic correspondences</p>
+                        </div>
                     </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Semantic and visual correspondence mapping</span>
+                    
+                    <div class="step-item">
+                        <div class="step-icon">
+                            <i class="fas fa-crosshairs"></i>
+                        </div>
+                        <div class="step-content">
+                            <h4>Correspondence Extraction</h4>
+                            <p>Samples <strong>high-confidence correspondences</strong> and extracts localized regions via SAM for precise matching</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <div class="step-content">
+                            <h4>Quality Filtering</h4>
+                            <p>Detects and filters <strong>ambiguous matches</strong> using skewness of similarity distributions to ensure data quality</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <div class="step-content">
+                            <h4>Controlled Inconsistencies</h4>
+                            <p>Applies <strong>diffusion-based inpainting (SDXL)</strong> to introduce controlled visual inconsistencies while preserving semantic content</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="step-content">
+                            <h4>Final Validation</h4>
+                            <p>Ensures quality via <strong>LPIPS filtering</strong> and size/aspect ratio constraints for consistent dataset standards</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- <div class="dataset-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">5,000</div>
+                        <div class="stat-label">Training Pairs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">500</div>
+                        <div class="stat-label">Validation Pairs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="stat-label">Paired Masks & Prompts</div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" id="architecture">
+        <div class="container">
+            <h2 class="section-title">Architecture</h2>
+            <div class="section-header">
+                <div class="section-image">
+                    <img src="public/method.jpg" alt="Architecture Diagram" />
+                </div>
+                <div class="section-content">
+                    <div class="architecture-overview">
+                        <p class="section-intro">Our architecture leverages a <strong>frozen diffusion backbone</strong> with dual-branch processing to disentangle semantic and visual features for precise inconsistency detection.</p>
+                    </div>
+                    
+                    <div class="architecture-components">
+                        <div class="component-item">
+                            <div class="component-icon">
+                                <i class="fas fa-snowflake"></i>
+                            </div>
+                            <div class="component-content">
+                                <h4>Frozen Diffusion Backbone</h4>
+                                <p>Built on <strong>Stable Diffusion 2.1</strong> with frozen weights to preserve pre-trained knowledge while extracting rich multi-layer decoder features</p>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <div class="component-content">
+                                <h4>Dual-Branch Architecture</h4>
+                                <p>Features are processed through <strong>two separate aggregation networks</strong> one for <b>semantic</b> and one for <b>visual</b> features</p>
+                            </div>
+                        </div>
+                        
+                        <!-- <div class="branch-details">
+                            <div class="branch-card semantic-branch">
+                                <div class="branch-header">
+                                    <i class="fas fa-brain"></i>
+                                    <h4>Semantic Branch (Ψs)</h4>
+                                </div>
+                                <p>Focuses on <strong>semantic consistency</strong> across image pairs, capturing high-level content understanding</p>
+                            </div>
+                            
+                            <div class="branch-card visual-branch">
+                                <div class="branch-header">
+                                    <i class="fas fa-eye"></i>
+                                    <h4>Visual Branch (Ψv)</h4>
+                                </div>
+                                <p>Targets <strong>fine-grained appearance</strong> details, detecting subtle visual inconsistencies</p>
+                            </div>
+                        </div> -->
+                        
+                        <div class="component-item">
+                            <div class="component-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div class="component-content">
+                                <h4>Feature Aggregation</h4>
+                                <p>Each branch uses <strong>ResNet blocks per layer</strong> with trainable scalar weights for optimal feature combination</p>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div class="component-content">
+                                <h4>Similarity Computation</h4>
+                                <p>Computes <strong>semantic and visual similarity matrices</strong> via dot products for correspondence matching</p>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <div class="component-content">
+                                <h4>Contrastive Training</h4>
+                                <p><strong>Semantic loss</strong> encourages alignment everywhere, while <strong>visual loss</strong> enforces similarity outside inconsistent regions and dissimilarity inside</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="architecture-benefits">
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Quantification</h4>
+                                <p>Measures inconsistency levels across image pairs</p>
+                            </div>
+                        </div>
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Localization</h4>
+                                <p>Pinpoints exact regions of visual inconsistencies</p>
+                            </div>
+                        </div>
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-puzzle-piece"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Disentanglement</h4>
+                                <p>Separates semantic from visual features effectively</p>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" id="results">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Results</h2>
+                <div class="section-content">
+                    <div class="results-overview">
+                        <p class="section-intro">We visualize  <strong>the disentangled semantic and visual features</strong> to demonstrate the effectiveness of our approach.</p>
+                        <div style="height: 2rem;"></div>
+                    </div>
+                </div>
+                <div class="carousel-container">
+
+                    <div class="carousel">
+                        <div class="carousel-slide active">
+                            <img src="public/testset/Slide1.JPG" alt="Results Slide 1" />
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="public/testset/Slide2.JPG" alt="Results Slide 2" />
+                        </div>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="carousel-btn prev-btn" onclick="changeSlide(-1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn next-btn" onclick="changeSlide(1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="carousel-indicators">
+                        <span class="indicator active" onclick="currentSlide(1)"></span>
+                        <span class="indicator" onclick="currentSlide(2)"></span>
+                    </div>
+                </div>
+            
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Evaluation Section -->
+    <section class="content-section" id="evaluation">
+        <div class="container">
+            <h2 class="section-title">Evaluating Subject-Driven Image Generation Approaches</h2>
+            <div class="section-header">
+                <div class="evaluation-overview">
+                    <p class="section-intro">To demonstrate the effectiveness of our approach on localizing and quantifying inconsistencies in real subject-driven image generation, we evaluate <strong>3 recent approaches</strong> and show that our proposed metric <strong>Visual Similarity Matching (VSM)</strong> based on feature correspondences is the most aligned with the groundtruth oracle compared to <strong>CLIP, DINO, and ChatGPT-4o</strong>.</p>
+                    <div style="height: 2rem;"></div>
+                </div>
+                
+                <div class="benchmark-carousel-container">
+                    <div class="benchmark-carousel">
+                        <div class="benchmark-slide active">
+                            <img src="public/benchmark/Slide1.jpg" alt="Benchmark Results Slide 1" />
+                        </div>
+                        <div class="benchmark-slide">
+                            <img src="public/benchmark/Slide2.jpg" alt="Benchmark Results Slide 2" />
+                        </div>                        
+                    </div>
+                    <div class="benchmark-controls">
+                        <button class="carousel-btn prev-btn" onclick="changeBenchmarkSlide(-1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn next-btn" onclick="changeBenchmarkSlide(1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="benchmark-indicators">
+                        <span class="indicator active" onclick="currentBenchmarkSlide(1)"></span>
+                        <span class="indicator" onclick="currentBenchmarkSlide(2)"></span>                        
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="section" id="architecture">
+    <section class="content-section" id="reference">
+        <div class="container">
             <div class="section-header">
-                <h2>Architecture</h2>
+                <h2 class="section-title"><i class="fas fa-quote-left"></i> Reference</h2>
             </div>
             <div class="section-content">
-                <div class="image-placeholder">
-                    <i class="fas fa-network-wired fa-3x"></i>
-                    <span>Architecture Diagram</span>
-                </div>
-                <p>Details about the architecture will be added here. We design a contrastive architecture to separate visual and semantic feature types from pre-trained diffusion model backbones.</p>
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Contrastive learning framework</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Feature disentanglement mechanism</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Integration with diffusion model backbones</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="results">
-            <div class="section-header">
-                <h2>Results</h2>
-            </div>
-            <div class="section-content">
-                <div class="image-placeholder">
-                    <i class="fas fa-chart-bar fa-3x"></i>
-                    <span>Results Visualization</span>
-                </div>
-                <p>Details about the results will be added here. Our approach outperforms global feature-based metrics such as CLIP, DINO, and vision-language models in quantifying visual inconsistencies.</p>
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Superior performance over CLIP and DINO</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Precise inconsistency localization</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Quantitative and qualitative evaluation</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="references">
-            <div class="section-header">
-                <h2>BibTeX</h2>
-            </div>
-            <div class="section-content">
-
-                <div class="bibtex-container">                    
-                    <pre class="bibtex-code">@inproceedings{eldesokey2025mindtheglitch,
+                <div class="citation-box">
+                    <pre><code>@inproceedings{eldesokey2025mindtheglitch,
   title={Mind-the-Glitch: Visual Correspondence for Detecting Inconsistencies in Subject-Driven Generation},
   author={Eldesokey, Abdelrahman and Cvejic, Aleksandar and Ghanem, Bernard and Wonka, Peter},
   booktitle={Advances in Neural Information Processing Systems},
   year={2025}
-}</pre>
+}</code></pre>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Mind-the-Glitch Research Team</p>
+            <p>&copy; 2025 Mind-the-Glitch. All rights reserved.</p>
         </div>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
